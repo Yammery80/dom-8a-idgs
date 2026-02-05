@@ -63,6 +63,19 @@ btnAgregarCard.addEventListener('click', () => {
     </div>
     `;
 
-    listaArticulosDiv.append(article);
+    listaArticulosDiv.prepend(article);
     setEstado('Nueva card agregada');
+});
+//Eliminar elementos del DOM de forma dinámica
+const btnLimpiarCard = $('#btnLimpiarCards');
+
+btnLimpiar.addEventListener('click', () => {
+    const cards = $$('#listaArticulos .card');
+    let removed = 0;
+    cards.forEach(card => { 
+        if(card.dataset.seed === 'true') return;
+            card.remove();
+            removed++;
+     });
+     setEstado(`Se eliminaron ${removed} cards`);
 });
