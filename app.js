@@ -94,11 +94,13 @@ const likeButtons = document.querySelectorAll('#listaArticulos button[data-actio
 likeButtons.forEach(btn => {
 btn.addEventListener('click', (e) => {
     const card = btn.closest('.card');
+    hacerLike(card);
+});
+
+const hacerLike = (card) => {
     const badge = card.querySelector('.badge');
     const currentLikes = Number(badge.textContent) || 0;
     badge.textContent = currentLikes + 1;
     setEstado('Like agregado');
-});
-const newlikeButtons = document.querySelector
-
+};
 });
