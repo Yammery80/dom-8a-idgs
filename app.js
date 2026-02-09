@@ -5,7 +5,7 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
 const buildCard =({title, text, tags}) => {
-    const article = DocumentTimeline.createElement('article');
+    const article = document.createElement('article');
     article.className = 'card';
     article.dataset.tags = tags;
     article.innerHTML = `
@@ -88,4 +88,17 @@ btnLimpiar.addEventListener('click', () => {
             removed++;
      });
      setEstado(`Se eliminaron ${removed} cards`);
+});
+
+const likeButtons = document.querySelectorAll('#listaArticulos button[data-action="like"]');
+likeButtons.forEach(btn => {
+btn.addEventListener('click', (e) => {
+    const card = btn.closest('.card');
+    const badge = card.querySelector('.badge');
+    const currentLikes = Number(badge.textContent) || 0;
+    badge.textContent = currentLikes + 1;
+    setEstado('Like agregado');
+});
+const newlikeButtons = document.querySelector
+
 });
