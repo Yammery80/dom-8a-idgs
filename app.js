@@ -90,17 +90,30 @@ btnLimpiar.addEventListener('click', () => {
      setEstado(`Se eliminaron ${removed} cards`);
 });
 
-const likeButtons = document.querySelectorAll('#listaArticulos button[data-action="like"]');
-likeButtons.forEach(btn => {
-btn.addEventListener('click', (e) => {
+//const likeButtons = document.querySelectorAll('#listaArticulos button[data-action="like"]');
+
+
+const listaArticulos3 = $('#listaArticulos');
+
+listaArticulos3.addEventListener('click', (e) => {
+     //¿Se hizo click en el boton de like?
+    const btn = e.target.closest('button[data-action="like"]');
+    if (!btn) return; //No es un boton de like, salir
     const card = btn.closest('.card');
+    if (!card) return; //No se encontro el card, salir
     hacerLike(card);
 });
 
-const hacerLike = (card) => {
-    const badge = card.querySelector('.badge');
-    const currentLikes = Number(badge.textContent) || 0;
-    badge.textContent = currentLikes + 1;
-    setEstado('Like agregado');
-};
-});
+// likeButtons.forEach(btn => {
+// btn.addEventListener('click', (e) => {
+//     const card = btn.closest('.card');
+//     hacerLike(card);
+// });
+
+ const hacerLike = (card) => {
+     const badge = card.querySelector('.badge');
+     const currentLikes = Number(badge.textContent) || 0;
+     badge.textContent = currentLikes + 1;
+     setEstado('Like agregado');
+ };
+ 
