@@ -104,6 +104,15 @@ listaArticulos3.addEventListener('click', (e) => {
     hacerLike(card);
 });
 
+listaArticulos3.addEventListener('click', (e) => {
+     //¿Se hizo click en el boton de eliminar?
+    const btn = e.target.closest('button[data-action="remove"]');
+    if (!btn) return; //No es un boton de eliminar, salir
+    const card = btn.closest('.card');
+    if (!card) return; //No se encontro el card, salir
+    eliminarButton(card);
+});
+
 // likeButtons.forEach(btn => {
 // btn.addEventListener('click', (e) => {
 //     const card = btn.closest('.card');
@@ -117,3 +126,7 @@ listaArticulos3.addEventListener('click', (e) => {
      setEstado('Like agregado');
  };
  
+ const eliminarButton = (card) => {
+     card.remove();
+     setEstado('Card eliminada');
+ };
