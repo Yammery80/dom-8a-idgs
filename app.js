@@ -105,12 +105,13 @@ listaArticulos3.addEventListener('click', (e) => {
 });
 
 listaArticulos3.addEventListener('click', (e) => {
-     //¿Se hizo click en el boton de eliminar?
-    const btn = e.target.closest('button[data-action="remove"]');
-    if (!btn) return; //No es un boton de eliminar, salir
-    const card = btn.closest('.card');
-    if (!card) return; //No se encontro el card, salir
-    eliminarButton(card);
+   // Botón REMOVE
+    const removeBtn = e.target.closest('button[data-action="remove"]');
+    if (removeBtn) {
+        const card = removeBtn.closest('.card');
+        if (!card) return;
+        quitarLike(card);
+    }
 });
 
 // likeButtons.forEach(btn => {
@@ -126,7 +127,41 @@ listaArticulos3.addEventListener('click', (e) => {
      setEstado('Like agregado');
  };
  
- const eliminarButton = (card) => {
-     card.remove();
-     setEstado('Card eliminada');
- };
+ const quitarLike = (card) => {
+    const badge = card.querySelector('.badge');
+    const currentLikes = Number(badge.textContent) || 0;
+
+    if (currentLikes > 0) {
+        badge.textContent = currentLikes - 1;
+        setEstado('Like eliminado');
+    } else {
+        setEstado('No se puede bajar de 0 likes');
+    }
+};
+
+
+//Filtrar cards
+
+const filtro = $('#filtro');
+
+//Unir titulo y texto de cada card
+//Busca lo que el usuario escribe en el filtro
+const matchText = (card, q) =>{
+    const title = card.querySelector('.card-title')?.textContent ?? '';
+    const text = card.querySelector('.card-text')?.textContent ?? ''; 
+    const haystack = (title + ' ' + text).toLowerCase();//convierte a minusculas
+    return haystack.includes(q);
+};
+
+//Evento Input = Filtrar mientras escribe
+filtro.addEventListener('input', ()=>{
+    //q: lo que el usuario escribe en el input
+    const q = filtro.value.trim().toLowerCase();
+    const cards = $$('#listaArticulos .card');
+
+    cards.forEach((card) => {
+        const ok = q === '' ? true : matchText(card, q);
+        card.style.display = ok ? '' : 'none';
+    });
+    setEstado( q === '' ? 'Filtro vacío' : `Filtro texto: "${q}"`);
+});
