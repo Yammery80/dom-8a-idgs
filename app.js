@@ -144,14 +144,40 @@ listaArticulos3.addEventListener('click', (e) => {
 
 const filtro = $('#filtro');
 
+const filterState = {q: '', tag: ''};
+
 //Unir titulo y texto de cada card
 //Busca lo que el usuario escribe en el filtro
+
 const matchText = (card, q) =>{
     const title = card.querySelector('.card-title')?.textContent ?? '';
     const text = card.querySelector('.card-text')?.textContent ?? ''; 
     const haystack = (title + ' ' + text).toLowerCase();//convierte a minusculas
     return haystack.includes(q);
 };
+
+const matchTag = (card, tag) => {
+    if (!tag) return true; // Si no hay tag, coinciden todas las cards
+    const tags = (card.dataset.tags || '').toLowerCase();
+    return tags.includes(tag.toLowerCase());
+};
+
+const applyFilters = () => {
+    const cards = $$('#listaArticulos .card');
+    cards.forEach((card) => {
+        const okText = filterState.q 
+            ? matchText(card, filterState.q) 
+            : true;
+        const okTag = matchTag(card, filterState.tag);
+        card.hidden = !(okText && okTag);
+    });
+    const parts =[];
+    if (filterState.q) parts.push(`Texto: "${filterState.q}"`);
+    if (filterState.tag) parts.push(`Tag: "${filterState.tag}"`);
+    setEstado(parts.length  
+        ? `Filtros aplicados (${parts.join(', ')})` 
+        : 'Filtro vacío');
+};  
 
 //Evento Input = Filtrar mientras escribe
 filtro.addEventListener('input', ()=>{
@@ -180,4 +206,29 @@ chips.addEventListener('click', (e) => {
         card.hidden = !tags.includes(tag);
     });
     setEstado(`Filtro por tag: "${tag}"`);
+});
+
+//Validad formulario
+const form = $('#formNewsletter');
+const email = $('#email');
+const interes = $('#feedback');
+
+//Validar email con regex
+const IsValidEmail = (value) => /^[^\s@]+@+[^\s@]+\.[^\s@]^+$/.test(value);
+
+form.addEventListener('submit', (e) => { 
+    //Evitar el envió del formulario
+    e.preventDefault();
+    const valueEmail = email.value.trim();
+    const valueInteres = interes.value.trim();
+
+    email.classList.remove('is-invalid');
+    interest.classList.remove('is-invalid');
+    feedback.textContent = '';
+
+    let ok = true;
+    if (!IsValidEmail(valueEmail)){
+        email.classList.add('is-invalid');
+        ok = false;
+    }
 });
