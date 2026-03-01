@@ -1,6 +1,6 @@
 :root{
   --bg:#0b1220; --card:#121b2e; --text:#e9edf5; --muted:#aab3c5;
-  --line:#22304f; --accent:#7aa2ff; --accent2:#56d3a2;
+  --line:#22304f; --accent:#7aa2ff; --accent2:#56d3a2; --alert:#ff4d4f;
 }
 [data-theme="light"]{
   --bg:#f6f7fb; --card:#ffffff; --text:#101828; --muted:#475467;
@@ -124,7 +124,7 @@ dd{ margin:.25rem 0 0; color:var(--muted); }
   padding:1rem; margin-top:1rem;
 }
 .form-row{ margin-bottom:1rem; }
-.feedback{ margin:.75rem 0 0; color:var(--accent2); min-height:1.2em; }
+.feedback{ margin:1.5rem 0 0; color:var(--alert); min-height:1.2em; background-color: #0b1220;padding: .5rem; border-radius: .5rem; }
 .mt{ margin-top:1.5rem; }
 .list{ margin:1rem 0 0; padding-left:1.25rem; color:var(--muted); }
 

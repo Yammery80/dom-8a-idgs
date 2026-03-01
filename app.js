@@ -208,27 +208,63 @@ chips.addEventListener('click', (e) => {
     setEstado(`Filtro por tag: "${tag}"`);
 });
 
-//Validad formulario
+// Validar el formulario de suscripción
 const form = $('#formNewsletter');
 const email = $('#email');
-const interes = $('#feedback');
+const interes = $('#interes');
+const feedback = $('#feedback');
 
-//Validar email con regex
-const IsValidEmail = (value) => /^[^\s@]+@+[^\s@]+\.[^\s@]^+$/.test(value);
+// validar el email con una expresión regular simple
+const isValidEmail = (value) => /^[^\s@]+@+[^\s@]+\.[^\s@]+$/.test(value);  
 
 form.addEventListener('submit', (e) => { 
-    //Evitar el envió del formulario
-    e.preventDefault();
+    // Evitar el envío del formulario
+    e.preventDefault(); 
     const valueEmail = email.value.trim();
     const valueInteres = interes.value.trim();
 
     email.classList.remove('is-invalid');
-    interest.classList.remove('is-invalid');
+    interes.classList.remove('is-invalid');
     feedback.textContent = '';
 
     let ok = true;
-    if (!IsValidEmail(valueEmail)){
+
+    if (!isValidEmail(valueEmail)) {
         email.classList.add('is-invalid');
         ok = false;
     }
+
+    if (!valueInteres) {
+        interes.classList.add('is-invalid');
+        ok = false;
+    }
+
+    if (!ok) {
+        feedback.textContent = 'Revisa los campos marcados como inválidos.';
+        setEstado('Formulario con datos no válidos');
+        return;
+    }
 });
+
+// Simulación de carga asíncrona de noticias
+
+const listaNoticias = $('#listaNoticias');
+
+const renderNoticias = (items) => {
+    listaNoticias.innerHTML = '';
+
+    if ( !items || items.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No se encontraron noticias.';
+        listaNoticias.append(li);
+        return;
+    }
+
+    items.forEach((t) => {
+        const li = document.createElement('li');
+        li.textContent = t;
+        listaNoticias.append(li);
+    });
+
+
+ };
