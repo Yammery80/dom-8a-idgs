@@ -265,6 +265,41 @@ const renderNoticias = (items) => {
         li.textContent = t;
         listaNoticias.append(li);
     });
-
-
  };
+
+ //Simular una carga asincrona con setTimeOut
+ //Fake fetch: #Falsa fetch que recupera información
+ const fakeFetchNoticias = () => {
+    return new Promise( (resolve, reject) => {
+        const shouldFail = Math.random() < 0.2; //20% de probabilidad de fallo
+        setTimeout(() => {
+            if (shouldFail){
+                reject( new Error('Fallo de red simulado'));
+                return;
+            }
+            resolve([
+                'JavaScript sigue siendo el rey de la web',
+                'Estalla la tercera guerra mmundial',
+                'Murio el Mencho por una Lady'
+            ]);
+        }, 1500);
+
+    })
+ };
+
+ const btnCargar = $('#btnCargar');
+ btnCargar.addEventListener('click', async() => {
+    btnCargar.disabled = true;
+    setEstado('Cargando noticias...');
+    try{
+        const items = await fakeFetchNoticias();
+        renderNoticias(items);
+        setEstado('Noticias cargadas');
+    }
+    catch (error){
+        renderNoticias([`Error: ${error.message}`]);
+        setEstado('Error al cargar noticias');
+    }finally {
+        btnCargar.disabled = false;
+    }
+ });
